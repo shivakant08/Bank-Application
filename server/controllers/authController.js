@@ -5,7 +5,7 @@ const database = require("../config/db.js");
 // Register Controller
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     if (!username || !email || !password) {
       return res.status(400).json({ error: "Fields cannot be empty" });
@@ -13,8 +13,10 @@ const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-    const [result] = await database.query(query, [username, email, hashedPassword]);
+    const userRole = role && role === "admin"? "admin":"user"
+
+    const query = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
+    const [result] = await database.query(query, [username, email, hashedPassword, userRole]);
 
     res.status(201).json({ message: "User registered", insertId: result.insertId });
 
@@ -57,7 +59,7 @@ const login = async (req, res) => {
     res.json({ 
       message: "Login successful",
       token,
-      user: { id: user.id, username: user.username, email: user.email }
+      user: { id: user.id, username: user.username, email: user.email, role:user.role }
     });
 
   } catch (error) {

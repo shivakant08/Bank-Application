@@ -1,10 +1,6 @@
 const express = require("express")
 const cors = require("cors")
-const bcrypt = require("bcrypt")
-const database = require("./config/db.js")
-const jwt = require("jsonwebtoken")
 const authRoutes = require("./routes/authRoutes.js")
-
 const app = express()
 const PORT = process.env.PORT
 
@@ -18,12 +14,11 @@ app.get("/", async (req, res) => {
     }
 })
 
-
-/// REGISTER USER
-
 app.use("/", authRoutes)
 
-
-app.listen(PORT, () => {
-    console.log("Server running on port", PORT)
+app.listen(PORT, ()=>{
+    console.log(`Server running on http://localhost:${PORT}`)
 })
+
+
+
