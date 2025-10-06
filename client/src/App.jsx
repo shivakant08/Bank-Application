@@ -5,11 +5,15 @@ import './App.css'
 import { Routes, Route } from 'react-router'
 
 
-import Navbar from './components/Navbar'
+
 import Home from './pages/Home'
 import About from './pages/About'
 import Register from "./pages/Register"
 import Login from "./pages/Login"
+import AdminDashboard from './pages/AdminDashboard'
+import ProtectedRoutes from '../utils/ProtectedRoutes'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 
 function App() {
@@ -17,18 +21,18 @@ function App() {
 
   return (
     <>
-
-      <Navbar />
+    <Header/>
       <Routes>
-        <Route path='/home' element={<Home/>}/>
-        <Route path='/about' element={<About/>}/>
-        <Route path='/sign-up'element={<Register/>}/>
-        <Route path='/login' element={<Login/>}/>
+        <Route path='/sign-up' element={<Register />} />
+        <Route path='/home' element={<Home />} />
+        <Route path='/login' element={<Login />} />
 
+        <Route element={<ProtectedRoutes />}>
+          <Route path='/about' element={<About />} />
+          <Route path='/admin-dashboard' element={<AdminDashboard />} />
+        </Route>
       </Routes>
-
-
-
+      <Footer/>
     </>
   )
 }
